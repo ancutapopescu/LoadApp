@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
 
     private var downloadID: Long = 0
     private var urlToDownload: String? = null
+    private lateinit var fileName: String
 
     private lateinit var customButton: LoadingButton
 
@@ -52,17 +53,21 @@ class MainActivity : AppCompatActivity() {
             when (view.getId()) {
                 R.id.glide_button ->
                     if (checked) {
+                    fileName = getString(R.string.glide_button_text)
                     urlToDownload = GLIDE_URL
                 }
                 R.id.loadapp_button ->
                     if (checked) {
+                    fileName = getString(R.string.loadapp_button_text)
                     urlToDownload = LOAD_APP_URL
                 }
                 R.id.retrofit_button ->
                     if (checked) {
+                    fileName = getString(R.string.retrofit_button_text)
                     urlToDownload = RETROFIT_URL
                     }
                 else -> {
+
                     Toast.makeText(this, "Please select a file to download!", Toast.LENGTH_LONG)
                             .show()
                 }
@@ -75,8 +80,9 @@ class MainActivity : AppCompatActivity() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val id = intent?.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
             if (id == downloadID) {
-                Toast.makeText(applicationContext, "File Download Completed", Toast.LENGTH_LONG)
-                        .show()
+
+                // Reset download button state, stop animation
+                customButton.buttonState = ButtonState.Completed
             }
         }
     }
@@ -84,12 +90,15 @@ class MainActivity : AppCompatActivity() {
     private fun download() {
         val request =
             DownloadManager.Request(Uri.parse(urlToDownload))
-                .setTitle(getString(R.string.app_name))
+                .setTitle(fileName)
                 .setDescription(getString(R.string.app_description))
                 .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
                 .setRequiresCharging(false)
                 .setAllowedOverMetered(true)
                 .setAllowedOverRoaming(true)
+
+        // Set button state, triggers the animation
+        customButton.buttonState = ButtonState.Loading
 
         val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
         downloadID = downloadManager.enqueue(request)

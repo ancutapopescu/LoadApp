@@ -62,18 +62,26 @@ class LoadingButton @JvmOverloads constructor(
 
             ButtonState.Loading -> {
                paintCircle.color = context.getColor(R.color.colorAccent)
-               valueAnimator = ValueAnimator.ofFloat(0.0f, measuredWidth.toFloat()).setDuration(2000).apply {
-                    addUpdateListener { valueAnimator ->
-                        value = valueAnimator.animatedValue as Float
-                        sweepAngle = value / 8
-                        width = value / 5
-                        invalidate()
+                valueAnimator = ValueAnimator.ofFloat(0.0f,
+                    measuredWidth.toFloat())
+                    .setDuration(2000)
+                    .apply {
+                        addUpdateListener { valueAnimator ->
+                            value = valueAnimator.animatedValue as Float
+                            sweepAngle = value / 8
+                            width = valueAnimator.animatedValue as Float
+                            repeatMode = ValueAnimator.RESTART
+                            repeatCount = ValueAnimator.INFINITE
+                            invalidate()
+                        }
                     }
-                }
                 valueAnimator.start()
             }
 
             ButtonState.Completed -> {
+                // Reset to default state
+                width = 0f
+                sweepAngle = 0f
                 valueAnimator.cancel()
                 value = 0.0f
                 invalidate()
@@ -93,7 +101,9 @@ class LoadingButton @JvmOverloads constructor(
         canvas?.drawRect(0.0f, 0.0f, widthSize.toFloat(), heightSize.toFloat(), paintButton)
         canvas?.drawRect(0f, 0f, width, heightSize.toFloat(), paintLoadingButton)
 
-        canvas?.drawText(buttonText, widthSize.toFloat() / 2.0f, heightSize.toFloat() / 2.0f, paintText)
+        val textHeight: Float = paintText.descent() - paintText.ascent()
+        val textOffset: Float = textHeight / 2 - paintText.descent()
+        canvas?.drawText(buttonText, widthSize.toFloat() / 2.0f, heightSize.toFloat() / 2.0f + textOffset, paintText)
 
         canvas?.drawArc(widthSize - 145f,
                 heightSize / 2 - 35f,
