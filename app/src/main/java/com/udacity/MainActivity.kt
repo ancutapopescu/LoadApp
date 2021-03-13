@@ -42,6 +42,12 @@ class MainActivity : AppCompatActivity() {
 
         registerReceiver(receiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
 
+        // Initialize the notification manager
+        notificationManager = ContextCompat.getSystemService(
+            applicationContext,
+            NotificationManager::class.java
+        ) as NotificationManager
+
         customButton = findViewById(R.id.custom_button)
         customButton.setOnClickListener {
             download()

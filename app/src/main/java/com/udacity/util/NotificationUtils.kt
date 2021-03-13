@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import androidx.core.app.NotificationCompat
+import com.udacity.DetailActivity
 import com.udacity.MainActivity
 import com.udacity.R
 
@@ -22,12 +23,12 @@ private val FLAGS = 0
  */
 fun NotificationManager.sendNotification(messageBody: String, applicationContext: Context, status: String) {
     // Create the content intent for the notification, which launches this activity.
-    // TODO: Step 1.11 create intent
-    val contentIntent = Intent(applicationContext, MainActivity::class.java)
+    // Step 1.11 create intent
+    val contentIntent = Intent(applicationContext, DetailActivity::class.java)
         .putExtra("fileName", messageBody)
         .putExtra("status", status)
 
-    // TODO: Step 1.12 create PendingIntent
+    // Step 1.12 create PendingIntent
     val contentPendingIntent = PendingIntent.getActivity(
         applicationContext,
         NOTIFICATION_ID,
@@ -36,7 +37,7 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
     )
 
 
-    // TODO: Step 2.0 add style
+    // Step 2.0 add style
    val cloudImage = BitmapFactory.decodeResource(
         applicationContext.resources,
         R.drawable.ic_load_app_notification_200dp
@@ -47,41 +48,43 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
 
 
 
-    // TODO: Step 1.2 get an instance of NotificationCompat.Builder
+    // Step 1.2 get an instance of NotificationCompat.Builder
     // Build the notification
     val builder = NotificationCompat.Builder(
         applicationContext,
         applicationContext.getString(R.string.download_channel_id)
     )
 
-        // TODO: Step 1.8 use the new 'breakfast' notification channel
-
-        // TODO: Step 1.3 set title, text and icon to builder
-        .setSmallIcon(R.drawable.ic_load_app_notification)
-        .setContentTitle(applicationContext
-            .getString(R.string.notification_title))
-        .setContentText(messageBody)
-
-        // TODO: Step 1.13 set content intent
-        .setContentIntent(contentPendingIntent)
-        .setAutoCancel(true)
 
 
-        // TODO: Step 2.1 add style to builder
-        .setStyle(bigPicStyle)
-        .setLargeIcon(cloudImage)
+    // Step 1.3 set title, text and icon to builder
+    .setSmallIcon(R.drawable.ic_load_app_notification)
+    .setContentTitle(applicationContext
+    .getString(R.string.notification_title))
+    .setContentText(messageBody)
 
-        // TODO: Step 2.5 set priority
-        .setPriority(NotificationCompat.PRIORITY_HIGH)
-    // TODO: Step 1.4 call notify
+    // Step 1.13 set content intent
+    .setContentIntent(contentPendingIntent)
+    .setAutoCancel(true)
+
+    // Set the action to open the DetailActivity
+    .addAction(0,
+        applicationContext.getString(R.string.notification_action_details),
+        contentPendingIntent)
+
+    // Step 2.5 set priority
+    .setPriority(NotificationCompat.PRIORITY_HIGH)
+
+    // Step 2.1 add style to builder
+    .setStyle(bigPicStyle)
+    .setLargeIcon(cloudImage)
+
+
+    // Step 1.4 call notify
     notify(NOTIFICATION_ID, builder.build())
 }
 
-// TODO: Step 1.14 Cancel all notifications
-/**
- * Cancels all notifications.
- *
- */
+// Step 1.14 Cancel all notifications
 fun NotificationManager.cancelNotifications() {
     cancelAll()
 }

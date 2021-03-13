@@ -20,5 +20,9 @@
     <string name="download_channel_id" translatable="false">Load App Channel</string>
     <string name="download_channel_name" translatable="true">Download Status</string>
     <string name="download_channel_description">Download status notifications (complete or fail.)</string>
+    <string name="notification_action_details">Check Status</string>
+    <string name="filename_label">File name</string>
+    <string name="status_label">Status</string>
+    <string name="back_button">BACK</string>
 
 </resources>
