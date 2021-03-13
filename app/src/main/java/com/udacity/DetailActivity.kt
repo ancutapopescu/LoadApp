@@ -2,9 +2,7 @@ package com.udacity
 
 import android.app.NotificationManager
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_detail.*
@@ -34,7 +32,7 @@ class DetailActivity : AppCompatActivity() {
         val statusExtra = intent.getStringExtra("status")
         val fileName = intent.getStringExtra("filename")
 
-        filename.text = fileName
+        file_name.text = fileName
         status.text = statusExtra
     }
 
