@@ -90,7 +90,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
     }
 
 
@@ -111,20 +110,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun download() {
-        val request =
-            DownloadManager.Request(Uri.parse(urlToDownload))
-                .setTitle(fileName)
-                .setDescription(getString(R.string.app_description))
-                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
-                .setRequiresCharging(false)
-                .setAllowedOverMetered(true)
-                .setAllowedOverRoaming(true)
+        if (urlToDownload == null) {
+            Toast.makeText(this, "Select an item", Toast.LENGTH_LONG).show()
+        } else {
+            val request =
+                DownloadManager.Request(Uri.parse(urlToDownload))
+                    .setTitle(fileName)
+                    .setDescription(getString(R.string.app_description))
+                    .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
+                    .setRequiresCharging(false)
+                    .setAllowedOverMetered(true)
+                    .setAllowedOverRoaming(true)
 
-        // Set button state, triggers the animation
-        customButton.buttonState = ButtonState.Loading
+            // Set button state, triggers the animation
+            customButton.buttonState = ButtonState.Loading
 
-        val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
-        downloadID = downloadManager.enqueue(request)
+            val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
+            downloadID = downloadManager.enqueue(request)
+        }
     }
 
     companion object {

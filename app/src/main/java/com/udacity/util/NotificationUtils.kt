@@ -21,11 +21,11 @@ private val FLAGS = 0
  *
  * @param context, activity context.
  */
-fun NotificationManager.sendNotification(messageBody: String, applicationContext: Context, status: String) {
+fun NotificationManager.sendNotification(fileName: String, applicationContext: Context, status: String) {
     // Create the content intent for the notification, which launches this activity.
     // Step 1.11 create intent
     val contentIntent = Intent(applicationContext, DetailActivity::class.java)
-        .putExtra("fileName", messageBody)
+        .putExtra("fileName", fileName)
         .putExtra("status", status)
 
     // Step 1.12 create PendingIntent
@@ -61,7 +61,7 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
     .setSmallIcon(R.drawable.ic_load_app_notification)
     .setContentTitle(applicationContext
     .getString(R.string.notification_title))
-    .setContentText(messageBody)
+    .setContentText(fileName)
 
     // Step 1.13 set content intent
     .setContentIntent(contentPendingIntent)
